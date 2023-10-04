@@ -4,6 +4,7 @@ The Java Bytecode Toolkit application was developed to assist developers and rev
 Current features:
 - Viewing general information about a Java class file such as the number of constant pool entries, the number of fields, the number of methods, the number of attributes and many more pieces of information.
 - Exporting the data contained in a Java class file to an XML file containing the data represented in a human-readable format.
+- Switching between a light mode theme and a dark mode theme.
 
 Planned (and upcoming) features:
 - Disassembly (So as to allow users to view a human-readable representation of bytecode instructions that are present in a Java class file).
