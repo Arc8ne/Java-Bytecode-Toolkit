@@ -24,29 +24,7 @@ namespace Java_Bytecode_Toolkit
     /// </summary>
     public partial class HomeScreen : UserControl
     {
-        private OpenFileDialog openFileDialog = new OpenFileDialog();
-
         public Dictionary<JavaClassFileTreeViewItem, JavaClassFile> javaClassFileTreeViewItemToJavaClassFileMap = new Dictionary<JavaClassFileTreeViewItem, JavaClassFile>();
-
-        private void OnLightThemeMenuItemClick(object sender, RoutedEventArgs e)
-        {
-            App.Current.Theme = App.Current.LIGHT_THEME;
-        }
-
-        private void OnDarkThemeMenuItemClick(object sender, RoutedEventArgs e)
-        {
-            App.Current.Theme = App.Current.DARK_THEME;
-        }
-
-        private void OnOpenFileMenuItemClick(object sender, RoutedEventArgs e)
-        {
-            this.openFileDialog.ShowDialog();
-        }
-
-        private void OnOpenFileDialogFileOk(object sender, CancelEventArgs e)
-        {
-            this.OpenFile(this.openFileDialog.FileNames);
-        }
 
         private void OpenJavaClassFile(string javaClassFilePath)
         {
@@ -69,23 +47,6 @@ namespace Java_Bytecode_Toolkit
         private void OpenJarFile(string jarFilePath)
         {
 
-        }
-
-        private void OpenFile(params string[] filePaths)
-        {
-            foreach (string currentFilePath in filePaths)
-            {
-                string currentFileName = System.IO.Path.GetFileName(currentFilePath);
-
-                if (currentFileName.Contains(".class") == true)
-                {
-                    this.OpenJavaClassFile(currentFilePath);
-                }
-                else if (currentFileName.Contains(".jar") == true)
-                {
-                    this.OpenJarFile(currentFilePath);
-                }
-            }
         }
 
         private void OnMainTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -128,22 +89,26 @@ namespace Java_Bytecode_Toolkit
         {
             InitializeComponent();
 
-            this.openFileDialog.SetFilter(
-                FileDialogFilter.JAVA_CLASS_FILE_FILTER,
-                FileDialogFilter.JAR_FILE_FILTER
-            );
-
             this.OnMainTreeViewSelectedItemChanged(null, null);
 
-            this.OpenFileMenuItem.Click += this.OnOpenFileMenuItemClick;
-
-            this.openFileDialog.FileOk += this.OnOpenFileDialogFileOk;
-
-            this.LightThemeMenuItem.Click += this.OnLightThemeMenuItemClick;
-
-            this.DarkThemeMenuItem.Click += this.OnDarkThemeMenuItemClick;
-
             this.MainTreeView.SelectedItemChanged += this.OnMainTreeViewSelectedItemChanged;
+        }
+
+        public void OpenFile(params string[] filePaths)
+        {
+            foreach (string currentFilePath in filePaths)
+            {
+                string currentFileName = System.IO.Path.GetFileName(currentFilePath);
+
+                if (currentFileName.Contains(".class") == true)
+                {
+                    this.OpenJavaClassFile(currentFilePath);
+                }
+                else if (currentFileName.Contains(".jar") == true)
+                {
+                    this.OpenJarFile(currentFilePath);
+                }
+            }
         }
     }
 }

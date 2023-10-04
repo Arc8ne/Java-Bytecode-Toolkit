@@ -142,10 +142,15 @@ namespace Java_Bytecode_Toolkit.ExtensionsNS
                         capitalizedFieldName
                     );
 
-                    Array fieldValueAsObjectArray = fieldInfo.GetValue(obj) as Array;
+                    Array fieldValueAsArray = fieldInfo.GetValue(obj) as Array;
 
-                    foreach (object element in fieldValueAsObjectArray)
+                    foreach (object element in fieldValueAsArray)
                     {
+                        if (element == null)
+                        {
+                            continue;
+                        }
+
                         Type elementType = element.GetType();
 
                         if (elementType.IsPrimitive == true)

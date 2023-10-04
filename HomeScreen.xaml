@@ -10,8 +10,6 @@
              FontWeight="SemiBold" FontSize="12">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -19,33 +17,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <ScrollViewer Grid.Row="0" Grid.Column="0" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
-            <Menu Name="ToolbarMenu" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor1}" Background="{DynamicResource BackgroundColor2}">
-                <MenuItem Padding="10 6" Header="File">
-                    <MenuItem Name="OpenFileMenuItem" Header="Open a File...">
-                        <MenuItem.Icon>
-                            <Image Source="/Assets/file-icon.svg"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </MenuItem>
-
-                <MenuItem Header="Help"/>
-
-                <MenuItem Header="About"/>
-
-                <MenuItem Header="Report a Bug"/>
-
-                <MenuItem Header="Request a Feature"/>
-
-                <MenuItem Header="Change Theme">
-                    <MenuItem Name="LightThemeMenuItem" Header="Light Theme" Icon="{DynamicResource LightThemeIcon}"/>
-
-                    <MenuItem Name="DarkThemeMenuItem" Header="Dark Theme" Icon="{DynamicResource DarkThemeIcon}"/>
-                </MenuItem>
-            </Menu>
-        </ScrollViewer>
-
-        <Grid Grid.Row="1" Grid.Column="0">
+        <Grid Grid.Row="0" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>

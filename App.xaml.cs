@@ -19,7 +19,19 @@ namespace Java_Bytecode_Toolkit
 
         public readonly ResourceDictionary DARK_THEME = null;
 
-        public readonly string tempDirFilePath = "";
+        public readonly string TEMP_DIR_FILE_PATH = "";
+
+        public readonly string LOGS_DIR_FILE_PATH = "";
+
+        public readonly string LOG_FILE_PATH = "";
+
+        public readonly string CONFIG_DIR_FILE_PATH = "";
+
+        public readonly string CONFIG_FILE_PATH = "";
+
+        public readonly Logger logger = null;
+
+        public readonly Configuration configuration = null;
 
         public static new App Current
         {
@@ -65,15 +77,23 @@ namespace Java_Bytecode_Toolkit
 
         private void CreateTempDirIfDoesNotExist()
         {
-            if (Directory.Exists(this.tempDirFilePath) == false)
+            if (Directory.Exists(this.TEMP_DIR_FILE_PATH) == false)
             {
-                Directory.CreateDirectory(this.tempDirFilePath);
+                Directory.CreateDirectory(this.TEMP_DIR_FILE_PATH);
             }
         }
 
         public App()
         {
-            this.tempDirFilePath = this.BaseDirectory + "/Temp";
+            this.TEMP_DIR_FILE_PATH = this.BaseDirectory + "/Temp";
+
+            this.LOGS_DIR_FILE_PATH = this.BaseDirectory + "/Logs";
+
+            this.LOG_FILE_PATH = this.LOGS_DIR_FILE_PATH + "/log.txt";
+
+            this.CONFIG_DIR_FILE_PATH = this.BaseDirectory + "/Config";
+
+            this.CONFIG_FILE_PATH = this.CONFIG_DIR_FILE_PATH + "/config.json";
 
             this.CreateTempDirIfDoesNotExist();
 
@@ -86,6 +106,10 @@ namespace Java_Bytecode_Toolkit
             {
                 Source = new Uri("/Themes/DarkTheme.xaml", UriKind.Relative)
             };
+
+            this.configuration = Configuration.Open();
+
+            this.logger = new Logger();
         }
     }
 }

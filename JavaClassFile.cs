@@ -557,9 +557,11 @@ namespace Java_Bytecode_Toolkit
                 {
                     name = (javaClassFile.constantPool[this.nameIndex] as ConstantUTF8Info).BytesAsASCIIString;
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return name;
@@ -587,9 +589,11 @@ namespace Java_Bytecode_Toolkit
                         javaClassFile
                     );
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return className;
@@ -605,9 +609,11 @@ namespace Java_Bytecode_Toolkit
                         javaClassFile
                     );
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return name;
@@ -623,9 +629,11 @@ namespace Java_Bytecode_Toolkit
                         javaClassFile
                     );
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return type;
@@ -653,9 +661,11 @@ namespace Java_Bytecode_Toolkit
                         javaClassFile
                     );
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return className;
@@ -671,9 +681,11 @@ namespace Java_Bytecode_Toolkit
                         javaClassFile
                     );
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return name;
@@ -689,9 +701,11 @@ namespace Java_Bytecode_Toolkit
                         javaClassFile
                     );
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return type;
@@ -719,9 +733,11 @@ namespace Java_Bytecode_Toolkit
                         javaClassFile
                     );
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return className;
@@ -737,9 +753,11 @@ namespace Java_Bytecode_Toolkit
                         javaClassFile
                     );
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return name;
@@ -755,9 +773,11 @@ namespace Java_Bytecode_Toolkit
                         javaClassFile
                     );
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return type;
@@ -781,9 +801,11 @@ namespace Java_Bytecode_Toolkit
                 {
                     stringValue = (javaClassFile.constantPool[this.stringIndex] as ConstantUTF8Info).BytesAsASCIIString;
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return stringValue;
@@ -853,9 +875,11 @@ namespace Java_Bytecode_Toolkit
                 {
                     name = (javaClassFile.constantPool[this.nameIndex] as ConstantUTF8Info).BytesAsASCIIString;
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return name;
@@ -869,9 +893,11 @@ namespace Java_Bytecode_Toolkit
                 {
                     descriptor = (javaClassFile.constantPool[this.descriptorIndex] as ConstantUTF8Info).BytesAsASCIIString;
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return descriptor;
@@ -937,9 +963,11 @@ namespace Java_Bytecode_Toolkit
                 {
                     descriptor = (javaClassFile.constantPool[this.descriptorIndex] as ConstantUTF8Info).BytesAsASCIIString;
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return descriptor;
@@ -1013,9 +1041,11 @@ namespace Java_Bytecode_Toolkit
                 {
                     name = (javaClassFile.constantPool[this.nameIndex] as ConstantUTF8Info).BytesAsASCIIString;
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return name;
@@ -1029,9 +1059,11 @@ namespace Java_Bytecode_Toolkit
                 {
                     descriptor = (javaClassFile.constantPool[this.descriptorIndex] as ConstantUTF8Info).BytesAsASCIIString;
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return descriptor;
@@ -1066,9 +1098,11 @@ namespace Java_Bytecode_Toolkit
                 {
                     name = (javaClassFile.constantPool[this.nameIndex] as ConstantUTF8Info).BytesAsASCIIString;
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return name;
@@ -1082,9 +1116,11 @@ namespace Java_Bytecode_Toolkit
                 {
                     descriptor = (javaClassFile.constantPool[this.descriptorIndex] as ConstantUTF8Info).BytesAsASCIIString;
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return descriptor;
@@ -1115,9 +1151,11 @@ namespace Java_Bytecode_Toolkit
                 {
                     attribName = (javaClassFile.constantPool[attributeNameIndex] as ConstantUTF8Info).BytesAsASCIIString;
                 }
-                catch
+                catch (Exception e)
                 {
-                    // TODO: Log this exception to a debug file.
+                    App.Current.logger.WriteLine(
+                        e.ToString()
+                    );
                 }
 
                 return attribName;
