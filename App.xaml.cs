@@ -29,6 +29,8 @@ namespace Java_Bytecode_Toolkit
 
         public readonly string CONFIG_FILE_PATH = "";
 
+        public readonly string OFFICIAL_GITHUB_REPO_LINK = "https://github.com/ArcaneDegree/Java-Bytecode-Toolkit";
+
         public readonly Logger logger = null;
 
         public readonly Configuration configuration = null;

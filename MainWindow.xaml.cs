@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,6 +65,11 @@ namespace Java_Bytecode_Toolkit
             App.Current.configuration.Save();
         }
 
+        private void OnGithubButtonClick(object sender, RoutedEventArgs e)
+        {
+            Process.Start(App.Current.OFFICIAL_GITHUB_REPO_LINK);
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -88,6 +94,8 @@ namespace Java_Bytecode_Toolkit
             this.SettingsMenuItem.Click += this.OnSettingsMenuItemClick;
 
             this.Closed += this.OnClosed;
+
+            this.GithubButton.Click += this.OnGithubButtonClick;
         }
     }
 }
