@@ -1,0 +1,142 @@
+﻿<UserControl x:Class="Java_Bytecode_Toolkit.HomeScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Java_Bytecode_Toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="{DynamicResource BackgroundColor1}"
+             FontWeight="SemiBold" FontSize="12">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer Grid.Row="0" Grid.Column="0" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto">
+            <Menu Name="ToolbarMenu" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundColor1}" Background="{DynamicResource BackgroundColor2}">
+                <MenuItem Padding="10 6" Header="File">
+                    <MenuItem Name="OpenFileMenuItem" Header="Open a File...">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/file-icon.svg"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+
+                <MenuItem Header="Help"/>
+
+                <MenuItem Header="About"/>
+
+                <MenuItem Header="Report a Bug"/>
+
+                <MenuItem Header="Request a Feature"/>
+
+                <MenuItem Header="Change Theme">
+                    <MenuItem Name="LightThemeMenuItem" Header="Light Theme" Icon="{DynamicResource LightThemeIcon}"/>
+
+                    <MenuItem Name="DarkThemeMenuItem" Header="Dark Theme" Icon="{DynamicResource DarkThemeIcon}"/>
+                </MenuItem>
+            </Menu>
+        </ScrollViewer>
+
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+
+            <TreeView Name="MainTreeView" Grid.Row="0" Grid.Column="0" Background="{DynamicResource BackgroundColor2}">
+                
+            </TreeView>
+
+            <TabControl Name="SelectedFileTabControl" Grid.Row="0" Grid.Column="1" SelectedIndex="0" Background="{DynamicResource BackgroundColor2}">
+                <TabItem Header="General Information">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                        <DockPanel LastChildFill="False" Margin="6">
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <TextBlock Margin="0 0 6 0">Class name:</TextBlock>
+
+                                <TextBlock Name="ClassNameTextBlock" Margin="0 0 0 6"></TextBlock>
+                            </StackPanel>
+
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <TextBlock Margin="0 0 6 0">File path:</TextBlock>
+
+                                <TextBlock Name="FilePathTextBlock" Margin="0 0 0 6"></TextBlock>
+                            </StackPanel>
+
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <TextBlock Margin="0 0 6 0">File magic number (in hexadecimal):</TextBlock>
+
+                                <TextBlock Name="FileMagicNumberInHexTextBlock" Margin="0 0 0 6"></TextBlock>
+                            </StackPanel>
+
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <TextBlock Margin="0 0 6 0">Major version:</TextBlock>
+
+                                <TextBlock Name="MajorVersionTextBlock" Margin="0 0 0 6"></TextBlock>
+                            </StackPanel>
+
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <TextBlock Margin="0 0 6 0">Minor version:</TextBlock>
+
+                                <TextBlock Name="MinorVersionTextBlock" Margin="0 0 0 6"></TextBlock>
+                            </StackPanel>
+
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <TextBlock Margin="0 0 6 0">Constant pool size:</TextBlock>
+
+                                <TextBlock Name="ConstantPoolSizeTextBlock" Margin="0 0 0 6"></TextBlock>
+                            </StackPanel>
+
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <TextBlock Margin="0 0 6 0">Access flags:</TextBlock>
+
+                                <TextBlock Name="AccessFlagsTextBlock" Margin="0 0 0 6"></TextBlock>
+                            </StackPanel>
+
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <TextBlock Margin="0 0 6 0">Number of interfaces:</TextBlock>
+
+                                <TextBlock Name="NumInterfacesTextBlock" Margin="0 0 0 6"></TextBlock>
+                            </StackPanel>
+
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <TextBlock Margin="0 0 6 0">Number of fields:</TextBlock>
+
+                                <TextBlock Name="NumFieldsTextBlock" Margin="0 0 0 6"></TextBlock>
+                            </StackPanel>
+
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <TextBlock Margin="0 0 6 0">Number of methods:</TextBlock>
+
+                                <TextBlock Name="NumMethodsTextBlock" Margin="0 0 0 6"></TextBlock>
+                            </StackPanel>
+
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <TextBlock Margin="0 0 6 0">Number of attributes:</TextBlock>
+
+                                <TextBlock Name="NumAttribsTextBlock" Margin="0 0 0 6"></TextBlock>
+                            </StackPanel>
+                        </DockPanel>
+                    </ScrollViewer>
+                </TabItem>
+
+                <TabItem Header="Disassembly">
+                    
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</UserControl>
