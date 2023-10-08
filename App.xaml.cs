@@ -1,4 +1,6 @@
 ﻿using Java_Bytecode_Toolkit.ExtensionsNS;
+using MdXaml;
+using Octokit;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -7,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Application = System.Windows.Application;
 
 namespace Java_Bytecode_Toolkit
 {
@@ -15,6 +18,10 @@ namespace Java_Bytecode_Toolkit
     /// </summary>
     public partial class App : Application
     {
+        public const string GITHUB_REPO_NAME = "Java-Bytecode-Toolkit";
+
+        public const string GITHUB_REPO_AUTHOR_NAME = "ArcaneDegree";
+
         public readonly ResourceDictionary LIGHT_THEME = null;
 
         public readonly ResourceDictionary DARK_THEME = null;
@@ -97,8 +104,6 @@ namespace Java_Bytecode_Toolkit
 
             this.CONFIG_FILE_PATH = this.CONFIG_DIR_FILE_PATH + "/config.json";
 
-            this.CreateTempDirIfDoesNotExist();
-
             this.LIGHT_THEME = new ResourceDictionary()
             {
                 Source = new Uri("/Themes/LightTheme.xaml", UriKind.Relative)
@@ -112,6 +117,56 @@ namespace Java_Bytecode_Toolkit
             this.configuration = Configuration.Open();
 
             this.logger = new Logger();
+        }
+
+        public async void Init()
+        {
+            this.CreateTempDirIfDoesNotExist();
+
+            this.ClearTempDir();
+
+            GitHubClient gitHubClient = new GitHubClient(
+                new ProductHeaderValue(
+                    (this.Resources["AppName"] as string).Replace(
+                        " ",
+                        "-"
+                    )
+                )
+            );
+
+            IReadOnlyList<RepositoryContent> repoContent = await gitHubClient.Repository.Content.GetAllContents(
+                GITHUB_REPO_AUTHOR_NAME,
+                GITHUB_REPO_NAME,
+                "README.md"
+            );
+
+            if (repoContent.Count > 0)
+            {
+                this.MainWindow.aboutScreen.MainMarkdownScrollViewer.Markdown = repoContent[0].Content;
+            }
+            else
+            {
+                this.logger.WriteLine(
+                    "Failed to retrieve contents from README.md file in application's Github repository."
+                );
+            }
+        }
+
+        public void ClearTempDir()
+        {
+            DirectoryInfo tempDirInfo = new DirectoryInfo(
+                App.Current.TEMP_DIR_FILE_PATH
+            );
+
+            foreach (FileInfo fileInfo in tempDirInfo.GetFiles())
+            {
+                fileInfo.Delete();
+            }
+
+            foreach (DirectoryInfo directoryInfo in tempDirInfo.GetDirectories())
+            {
+                directoryInfo.Delete(true);
+            }
         }
     }
 }

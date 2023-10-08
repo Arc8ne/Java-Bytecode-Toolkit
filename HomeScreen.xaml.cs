@@ -1,4 +1,5 @@
-﻿using Java_Bytecode_Toolkit.ExtensionsNS;
+﻿using ICSharpCode.SharpZipLib.Zip;
+using Java_Bytecode_Toolkit.ExtensionsNS;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -24,30 +25,7 @@ namespace Java_Bytecode_Toolkit
     /// </summary>
     public partial class HomeScreen : UserControl
     {
-        public Dictionary<JavaClassFileTreeViewItem, JavaClassFile> javaClassFileTreeViewItemToJavaClassFileMap = new Dictionary<JavaClassFileTreeViewItem, JavaClassFile>();
-
-        private void OpenJavaClassFile(string javaClassFilePath)
-        {
-            JavaClassFile javaClassFile = new JavaClassFile(javaClassFilePath);
-
-            JavaClassFileTreeViewItem javaClassFileTreeViewItem = new JavaClassFileTreeViewItem()
-            {
-                DataContext = javaClassFile
-            };
-
-            this.MainTreeView.Items.Add(
-                javaClassFileTreeViewItem
-            );
-
-            this.javaClassFileTreeViewItemToJavaClassFileMap[javaClassFileTreeViewItem] = javaClassFile;
-
-            javaClassFileTreeViewItem.IsSelected = true;
-        }
-
-        private void OpenJarFile(string jarFilePath)
-        {
-
-        }
+        public Dictionary<JavaFileTreeViewItem, JavaClassFile> javaClassFileTreeViewItemToJavaClassFileMap = new Dictionary<JavaFileTreeViewItem, JavaClassFile>();
 
         private void OnMainTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -58,7 +36,7 @@ namespace Java_Bytecode_Toolkit
                 return;
             }
 
-            JavaClassFile selectedJavaClassFile = this.javaClassFileTreeViewItemToJavaClassFileMap[this.MainTreeView.SelectedItem as JavaClassFileTreeViewItem];
+            JavaClassFile selectedJavaClassFile = this.javaClassFileTreeViewItemToJavaClassFileMap[this.MainTreeView.SelectedItem as JavaFileTreeViewItem];
 
             this.ClassNameTextBlock.Text = selectedJavaClassFile.Name.Split('.')[0];
 
@@ -92,23 +70,6 @@ namespace Java_Bytecode_Toolkit
             this.OnMainTreeViewSelectedItemChanged(null, null);
 
             this.MainTreeView.SelectedItemChanged += this.OnMainTreeViewSelectedItemChanged;
-        }
-
-        public void OpenFile(params string[] filePaths)
-        {
-            foreach (string currentFilePath in filePaths)
-            {
-                string currentFileName = System.IO.Path.GetFileName(currentFilePath);
-
-                if (currentFileName.Contains(".class") == true)
-                {
-                    this.OpenJavaClassFile(currentFilePath);
-                }
-                else if (currentFileName.Contains(".jar") == true)
-                {
-                    this.OpenJarFile(currentFilePath);
-                }
-            }
         }
     }
 }

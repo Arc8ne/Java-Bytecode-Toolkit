@@ -20,7 +20,7 @@ using System.Xml.Serialization;
 
 namespace Java_Bytecode_Toolkit
 {
-    public class JavaClassFileTreeViewItem : TreeViewItem
+    public class JavaFileTreeViewItem : TreeViewItem
     {
         private MenuItem closeContextMenuItem = null;
 
@@ -28,9 +28,9 @@ namespace Java_Bytecode_Toolkit
 
         private SaveFileDialog exportAsXMLFileSaveFileDialog = new SaveFileDialog();
 
-        static JavaClassFileTreeViewItem()
+        static JavaFileTreeViewItem()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(JavaClassFileTreeViewItem), new FrameworkPropertyMetadata(typeof(JavaClassFileTreeViewItem)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(JavaFileTreeViewItem), new FrameworkPropertyMetadata(typeof(JavaFileTreeViewItem)));
         }
 
         private void OnExportAsXMLFileSaveFileDialogFileOk(object sender, CancelEventArgs e)
@@ -50,7 +50,7 @@ namespace Java_Bytecode_Toolkit
             App.Current.MainWindow.homeScreen.MainTreeView.Items.Remove(this);
         }
 
-        public JavaClassFileTreeViewItem()
+        public JavaFileTreeViewItem()
         {
 
         }

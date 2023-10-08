@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="Java_Bytecode_Toolkit.LoadingScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Java_Bytecode_Toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="{DynamicResource BackgroundColor1}"
+             FontWeight="SemiBold">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+
+            <RowDefinition Height="auto"/>
+
+            <RowDefinition Height="20"/>
+
+            <RowDefinition Height="auto"/>
+
+            <RowDefinition Height="20"/>
+
+            <RowDefinition Height="auto"/>
+
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Path Grid.Row="0" Grid.Column="0" Width="360" Height="360" Stretch="Uniform" Fill="#333333" Data="M 7.082 11.934 Q 7.082 13.622 6.3 14.518 Q 5.517 15.414 4.035 15.414 Q 3.373 15.414 2.81 15.186 L 2.81 13.411 Q 3.297 13.78 3.9 13.78 Q 5.195 13.78 5.195 11.858 L 5.195 6.866 L 7.082 6.866 Z M 8.914 15.268 L 8.914 6.866 L 11.973 6.866 Q 13.379 6.866 14.135 7.381 Q 14.891 7.897 14.891 8.834 Q 14.891 9.514 14.431 10.024 Q 13.971 10.534 13.256 10.733 L 13.256 10.756 Q 14.152 10.868 14.688 11.418 Q 15.225 11.969 15.225 12.76 Q 15.225 13.914 14.398 14.591 Q 13.572 15.268 12.143 15.268 Z M 10.807 8.26 L 10.807 10.252 L 11.639 10.252 Q 12.225 10.252 12.561 9.968 Q 12.898 9.684 12.898 9.186 Q 12.898 8.26 11.516 8.26 Z M 10.807 11.659 L 10.807 13.873 L 11.832 13.873 Q 12.488 13.873 12.86 13.569 Q 13.232 13.264 13.232 12.737 Q 13.232 12.233 12.866 11.946 Q 12.5 11.659 11.844 11.659 Z M 22.225 8.407 L 19.828 8.407 L 19.828 15.268 L 17.93 15.268 L 17.93 8.407 L 15.545 8.407 L 15.545 6.866 L 22.225 6.866 Z"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">The Java Bytecode Toolkit</TextBlock>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center">Loading. Please wait...</TextBlock>
+
+        <local:Spinner Grid.Row="5" Grid.Column="0" Angle="0" IsEnabled="True" Width="24" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+        </local:Spinner>
+    </Grid>
+</UserControl>
