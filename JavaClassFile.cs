@@ -14,18 +14,10 @@ using System.Xml.Serialization;
 
 namespace Java_Bytecode_Toolkit
 {
-    public class JavaClassFile
+    public class JavaClassFile : FileSystemItem
     {
-        private static readonly XmlWriterSettings DEFAULT_XML_WRITER_SETTINGS = new XmlWriterSettings()
-        {
-            Indent = true,
-            NewLineOnAttributes = true
-        };
-
         // Note: Everything in Java binary files is stored in big-endian order.
         public const bool IS_JAVA_BINARY_FILE_LITTLE_ENDIAN = false;
-
-        public string filePath = "";
 
         public UInt32 magic = 0;
 
@@ -65,106 +57,93 @@ namespace Java_Bytecode_Toolkit
         // Array size = attributesCount
         public AttributeInfo[] attributes = null;
 
-        public String Name
-        {
-            get
-            {
-                string[] filePathParts = this.filePath.Split(
-                    Path.DirectorySeparatorChar
-                );
-
-                return filePathParts[filePathParts.Length - 1];
-            }
-        }
-
-        public JavaClassFile()
+        public JavaClassFile() : base()
         {
 
         }
 
-        public JavaClassFile(string javaClassFilePath)
+        public JavaClassFile(string javaClassFilePath) : base(javaClassFilePath)
         {
-            this.filePath = javaClassFilePath;
-
             bool readSuccessful = this.Read();
         }
 
         public bool Read()
         {
-            FileStream javaClassFileStream = null;
-
             try
             {
-                javaClassFileStream = File.OpenRead(this.filePath);
+                using (FileStream javaClassFileStream = File.OpenRead(this.filePath))
+                {
+                    this.magic = javaClassFileStream.ReadBytesFromStreamAs<uint>(
+                        IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
+                    );
+
+                    this.minorVersion = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
+                        IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
+                    );
+
+                    this.majorVersion = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
+                        IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
+                    );
+
+                    this.constantPoolCount = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
+                        IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
+                    );
+
+                    this.constantPool = new ConstantPoolInfo[this.constantPoolCount - 1];
+
+                    this.ReadConstantPool(javaClassFileStream);
+
+                    this.accessFlags = (AccessFlags)javaClassFileStream.ReadBytesFromStreamAs<UInt16>(
+                        IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
+                    );
+
+                    this.thisClass = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
+                        IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
+                    );
+
+                    this.superClass = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
+                        IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
+                    );
+
+                    this.interfacesCount = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
+                        IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
+                    );
+
+                    this.interfaces = new ushort[this.interfacesCount];
+
+                    this.ReadInterfaces(javaClassFileStream);
+
+                    this.fieldsCount = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
+                        IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
+                    );
+
+                    this.fields = new FieldInfo[this.fieldsCount];
+
+                    this.ReadFields(javaClassFileStream);
+
+                    this.methodsCount = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
+                        IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
+                    );
+
+                    this.methods = new MethodInfo[this.methodsCount];
+
+                    this.ReadMethods(javaClassFileStream);
+
+                    this.attributesCount = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
+                        IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
+                    );
+
+                    this.attributes = new AttributeInfo[this.attributesCount];
+
+                    this.ReadAttributes(javaClassFileStream);
+                }
             }
-            catch
+            catch (Exception e)
             {
+                App.Current.logger.WriteLine(e.ToString());
+
                 return false;
             }
-
-            this.magic = javaClassFileStream.ReadBytesFromStreamAs<uint>(
-                IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
-            );
-
-            this.minorVersion = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
-                IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
-            );
-
-            this.majorVersion = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
-                IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
-            );
-
-            this.constantPoolCount = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
-                IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
-            );
-
-            this.constantPool = new ConstantPoolInfo[this.constantPoolCount - 1];
-
-            this.ReadConstantPool(javaClassFileStream);
-
-            this.accessFlags = (AccessFlags)javaClassFileStream.ReadBytesFromStreamAs<UInt16>(
-                IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
-            );
-
-            this.thisClass = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
-                IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
-            );
-
-            this.superClass = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
-                IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
-            );
-
-            this.interfacesCount = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
-                IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
-            );
-
-            this.interfaces = new ushort[this.interfacesCount];
-
-            this.ReadInterfaces(javaClassFileStream);
-
-            this.fieldsCount = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
-                IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
-            );
-
-            this.fields = new FieldInfo[this.fieldsCount];
-
-            this.ReadFields(javaClassFileStream);
-
-            this.methodsCount = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
-                IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
-            );
-
-            this.methods = new MethodInfo[this.methodsCount];
-
-            this.ReadMethods(javaClassFileStream);
-
-            this.attributesCount = javaClassFileStream.ReadBytesFromStreamAs<ushort>(
-                IS_JAVA_BINARY_FILE_LITTLE_ENDIAN
-            );
-
-            this.attributes = new AttributeInfo[this.attributesCount];
-
-            this.ReadAttributes(javaClassFileStream);
 
             return true;
         }
@@ -520,7 +499,7 @@ namespace Java_Bytecode_Toolkit
 
         }
 
-        public void ExportAsXMLFile(string exportedXMLFilePath)
+        public override void ExportAsXMLFile(string exportedXMLFilePath)
         {
             using (XmlWriter xmlWriter = XmlWriter.Create(exportedXMLFilePath, DEFAULT_XML_WRITER_SETTINGS))
             {

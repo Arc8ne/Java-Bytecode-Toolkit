@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using System.Xml;
 
 namespace Java_Bytecode_Toolkit.ExtensionsNS
@@ -196,6 +197,14 @@ namespace Java_Bytecode_Toolkit.ExtensionsNS
             }
 
             xmlWriter.WriteEndElement();
+        }
+
+        public static DispatcherOperation BeginInvoke(this Dispatcher dispatcher, Action action, params object[] args)
+        {
+            return dispatcher.BeginInvoke(
+                (Action)action,
+                args
+            );
         }
 
         public class UnsupportedConversionException : Exception

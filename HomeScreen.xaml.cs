@@ -25,7 +25,7 @@ namespace Java_Bytecode_Toolkit
     /// </summary>
     public partial class HomeScreen : UserControl
     {
-        public Dictionary<JavaFileTreeViewItem, JavaClassFile> javaClassFileTreeViewItemToJavaClassFileMap = new Dictionary<JavaFileTreeViewItem, JavaClassFile>();
+        public Dictionary<FileSystemTreeViewItem, FileSystemItem> fileSystemTreeViewItemToFileSystemItemMap = new Dictionary<FileSystemTreeViewItem, FileSystemItem>();
 
         private void OnMainTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -36,29 +36,32 @@ namespace Java_Bytecode_Toolkit
                 return;
             }
 
-            JavaClassFile selectedJavaClassFile = this.javaClassFileTreeViewItemToJavaClassFileMap[this.MainTreeView.SelectedItem as JavaFileTreeViewItem];
+            FileSystemItem selectedJavaFile = this.fileSystemTreeViewItemToFileSystemItemMap[this.MainTreeView.SelectedItem as FileSystemTreeViewItem];
 
-            this.ClassNameTextBlock.Text = selectedJavaClassFile.Name.Split('.')[0];
+            this.ClassNameTextBlock.Text = selectedJavaFile.Name.Split('.')[0];
 
-            this.FilePathTextBlock.Text = selectedJavaClassFile.filePath;
+            this.FilePathTextBlock.Text = selectedJavaFile.filePath;
 
-            this.FileMagicNumberInHexTextBlock.Text = "0x" + selectedJavaClassFile.magic.ToString("X");
+            if (selectedJavaFile is JavaClassFile selectedJavaClassFile)
+            {
+                this.FileMagicNumberInHexTextBlock.Text = "0x" + selectedJavaClassFile.magic.ToString("X");
 
-            this.MajorVersionTextBlock.Text = selectedJavaClassFile.majorVersion.ToString();
+                this.MajorVersionTextBlock.Text = selectedJavaClassFile.majorVersion.ToString();
 
-            this.MinorVersionTextBlock.Text = selectedJavaClassFile.minorVersion.ToString();
+                this.MinorVersionTextBlock.Text = selectedJavaClassFile.minorVersion.ToString();
 
-            this.ConstantPoolSizeTextBlock.Text = selectedJavaClassFile.constantPoolCount.ToString();
+                this.ConstantPoolSizeTextBlock.Text = selectedJavaClassFile.constantPoolCount.ToString();
 
-            this.AccessFlagsTextBlock.Text = selectedJavaClassFile.accessFlags.ToString();
+                this.AccessFlagsTextBlock.Text = selectedJavaClassFile.accessFlags.ToString();
 
-            this.NumInterfacesTextBlock.Text = selectedJavaClassFile.interfacesCount.ToString();
+                this.NumInterfacesTextBlock.Text = selectedJavaClassFile.interfacesCount.ToString();
 
-            this.NumFieldsTextBlock.Text = selectedJavaClassFile.fieldsCount.ToString();
+                this.NumFieldsTextBlock.Text = selectedJavaClassFile.fieldsCount.ToString();
 
-            this.NumMethodsTextBlock.Text = selectedJavaClassFile.methodsCount.ToString();
+                this.NumMethodsTextBlock.Text = selectedJavaClassFile.methodsCount.ToString();
 
-            this.NumAttribsTextBlock.Text = selectedJavaClassFile.attributesCount.ToString();
+                this.NumAttribsTextBlock.Text = selectedJavaClassFile.attributesCount.ToString();
+            }
 
             this.SelectedFileTabControl.Visibility = Visibility.Visible;
         }

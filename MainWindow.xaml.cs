@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Java_Bytecode_Toolkit
 {
@@ -182,49 +183,133 @@ namespace Java_Bytecode_Toolkit
                 return jarFilePathParts[jarFilePathParts.Length - 1].Replace(".jar", "");
             }
 
-            private void OpenJavaClassFile(string javaClassFilePath, JavaFileTreeViewItem jarFileTreeViewItem = null)
+            private void AddFileSystemTreeViewItemToFileSystemTreeViewAndMap(FileSystemItem fileSystemItem, FileSystemTreeViewItem fileSystemTreeViewItem, FileSystemTreeViewItem parentFileSystemTreeViewItem = null, bool autoSelect = true)
             {
-                JavaClassFile javaClassFile = new JavaClassFile(javaClassFilePath);
-
-                JavaFileTreeViewItem javaClassFileTreeViewItem = new JavaFileTreeViewItem()
-                {
-                    DataContext = javaClassFile
-                };
-
-                if (javaClassFileTreeViewItem == null)
+                if (parentFileSystemTreeViewItem == null)
                 {
                     App.Current.MainWindow.homeScreen.MainTreeView.Items.Add(
-                        javaClassFileTreeViewItem
+                        fileSystemTreeViewItem
                     );
+
+                    App.Current.MainWindow.homeScreen.MainTreeView.Items.Refresh();
                 }
                 else
                 {
-                    jarFileTreeViewItem.Items.Add(javaClassFileTreeViewItem);
+                    parentFileSystemTreeViewItem.Items.Add(fileSystemTreeViewItem);
+
+                    parentFileSystemTreeViewItem.Items.Refresh();
                 }
 
-                App.Current.MainWindow.homeScreen.javaClassFileTreeViewItemToJavaClassFileMap[javaClassFileTreeViewItem] = javaClassFile;
+                App.Current.MainWindow.homeScreen.fileSystemTreeViewItemToFileSystemItemMap[fileSystemTreeViewItem] = fileSystemItem;
 
-                javaClassFileTreeViewItem.IsSelected = true;
+                fileSystemTreeViewItem.IsSelected = autoSelect;
             }
 
-            private void OpenJarFile(string jarFilePath)
+            private void OpenFileOrDirectory(string filePath, FileSystemTreeViewItem parentFileSystemTreeViewItem)
+            {
+                string fileExtension = System.IO.Path.GetExtension(filePath);
+
+                if (fileExtension == ".class")
+                {
+                    this.OpenJavaClassFile(
+                        filePath,
+                        parentFileSystemTreeViewItem
+                    );
+
+                    return;
+                }
+                else if (fileExtension == ".jar")
+                {
+                    this.OpenJarFile(
+                        filePath,
+                        parentFileSystemTreeViewItem
+                    );
+
+                    return;
+                }
+
+                FileSystemItem fileSystemItem = new FileSystemItem(filePath);
+
+                FileSystemTreeViewItem associatedFileSystemTreeViewItem = App.Current.Dispatcher.Invoke(() =>
+                {
+                    FileSystemTreeViewItem fileSystemTreeViewItem = new FileSystemTreeViewItem()
+                    {
+                        DataContext = fileSystemItem
+                    };
+
+                    this.AddFileSystemTreeViewItemToFileSystemTreeViewAndMap(
+                        fileSystemItem,
+                        fileSystemTreeViewItem,
+                        parentFileSystemTreeViewItem,
+                        false
+                    );
+
+                    return fileSystemTreeViewItem;
+                });
+
+                if (fileSystemItem.IsFile == false)
+                {
+                    DirectoryInfo dirInfo = new DirectoryInfo(
+                        fileSystemItem.filePath
+                    );
+
+                    foreach (FileInfo childFileInfo in dirInfo.GetFiles())
+                    {
+                        this.OpenFileOrDirectory(
+                            childFileInfo.FullName,
+                            associatedFileSystemTreeViewItem
+                        );
+                    }
+
+                    foreach (DirectoryInfo childDirInfo in dirInfo.GetDirectories())
+                    {
+                        this.OpenFileOrDirectory(
+                            childDirInfo.FullName,
+                            associatedFileSystemTreeViewItem
+                        );
+                    }
+                }
+            }
+
+            private void OpenJavaClassFile(string javaClassFilePath, FileSystemTreeViewItem parentFileSystemTreeViewItem = null)
+            {
+                JavaClassFile javaClassFile = new JavaClassFile(javaClassFilePath);
+
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    FileSystemTreeViewItem javaClassFileSystemTreeViewItem = new FileSystemTreeViewItem()
+                    {
+                        DataContext = javaClassFile
+                    };
+
+                    this.AddFileSystemTreeViewItemToFileSystemTreeViewAndMap(
+                        javaClassFile,
+                        javaClassFileSystemTreeViewItem,
+                        parentFileSystemTreeViewItem
+                    );
+                });
+            }
+
+            private void OpenJarFile(string jarFilePath, FileSystemTreeViewItem parentFileSystemTreeViewItem = null)
             {
                 string jarContentsTempDirFilePath = App.Current.TEMP_DIR_FILE_PATH + "/" + this.GetJarFileNameFromJarFilePath(
                     jarFilePath
                 ) + "-jar-contents";
 
+                JavaJarFile javaJarFile = new JavaJarFile(jarFilePath);
+
                 if (Directory.Exists(jarContentsTempDirFilePath) == true)
                 {
-                    DirectoryInfo jarContentsTempDirInfo = new DirectoryInfo(
+                    DirectoryInfo existingJarContentsTempDirInfo = new DirectoryInfo(
                         jarContentsTempDirFilePath
                     );
 
-                    foreach (FileInfo fileInfo in jarContentsTempDirInfo.GetFiles())
+                    foreach (FileInfo fileInfo in existingJarContentsTempDirInfo.GetFiles())
                     {
                         fileInfo.Delete();
                     }
 
-                    foreach (DirectoryInfo dirInfo in jarContentsTempDirInfo.GetDirectories())
+                    foreach (DirectoryInfo dirInfo in existingJarContentsTempDirInfo.GetDirectories())
                     {
                         dirInfo.Delete(true);
                     }
@@ -243,6 +328,43 @@ namespace Java_Bytecode_Toolkit
                     jarContentsTempDirFilePath,
                     ""
                 );
+
+                FileSystemTreeViewItem associatedJavaJarFileSystemTreeViewItem = App.Current.Dispatcher.Invoke(() =>
+                {
+                    FileSystemTreeViewItem javaJarFileSystemTreeViewItem = new FileSystemTreeViewItem()
+                    {
+                        DataContext = javaJarFile
+                    };
+
+                    this.AddFileSystemTreeViewItemToFileSystemTreeViewAndMap(
+                        javaJarFile,
+                        javaJarFileSystemTreeViewItem,
+                        parentFileSystemTreeViewItem,
+                        false
+                    );
+
+                    return javaJarFileSystemTreeViewItem;
+                });
+
+                DirectoryInfo jarContentsTempDirInfo = new DirectoryInfo(
+                    jarContentsTempDirFilePath
+                );
+
+                foreach (FileInfo childFileInfo in jarContentsTempDirInfo.GetFiles())
+                {
+                    this.OpenFileOrDirectory(
+                        childFileInfo.FullName,
+                        associatedJavaJarFileSystemTreeViewItem
+                    );
+                }
+
+                foreach (DirectoryInfo childDirInfo in jarContentsTempDirInfo.GetDirectories())
+                {
+                    this.OpenFileOrDirectory(
+                        childDirInfo.FullName,
+                        associatedJavaJarFileSystemTreeViewItem
+                    );
+                }
             }
 
             private void PerformCleanup()
@@ -278,16 +400,7 @@ namespace Java_Bytecode_Toolkit
                 {
                     foreach (string currentFilePath in this.filePaths)
                     {
-                        string currentFileName = System.IO.Path.GetFileName(currentFilePath);
-
-                        if (currentFileName.Contains(".class") == true)
-                        {
-                            this.OpenJavaClassFile(currentFilePath);
-                        }
-                        else if (currentFileName.Contains(".jar") == true)
-                        {
-                            this.OpenJarFile(currentFilePath);
-                        }
+                        this.OpenFileOrDirectory(currentFilePath, null);
                     }
                 }
 
